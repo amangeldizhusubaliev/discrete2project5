@@ -2,7 +2,9 @@
 
 using namespace std;
 
-inline void dijkstra(const vector<vector<pair<int, int>>>& g, const int n, const int src, const int dest, int& dist, vector<pair<pair<int, int>, int>>& path) {
+inline void dijkstra(const vector<vector<pair<int, int>>>& g, 
+                     const int n, const int src, const int dest,
+                     int& dist, vector<pair<pair<int, int>, int>>& path) {
     set<pair<int, int>> q;
     vector<int> d(n, -1);
     vector<pair<int, int>> p(n);
