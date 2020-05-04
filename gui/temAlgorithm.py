@@ -1,11 +1,9 @@
 
 from heapq import *
 
-# NOT FINISHED YET
-# Currently problem is in line  19
-def dijkstra(g,n,src,dest,dist,path):
-    d = [-1] * n # vector<int> d(n, -1);
-    p = [None] * n # vector<pair<int, int>> p(n);
+def dijkstra(g,n,src,dest,path):
+    d = [-1] * n 
+    p = [None] * n
     d[src] = 0
     p[src] = [src,0]
     q = [(0, src)]
@@ -26,7 +24,7 @@ def dijkstra(g,n,src,dest,dist,path):
             path.append([[p[v][0],v], p[v][1]])
             v = p[v][0]
         path.reverse()
-    return
+    return dist
     
 
 n = 5
@@ -53,9 +51,9 @@ g[4].append([1,3])
 g[2].append([4,1])
 g[4].append([2,1])
 
-src,dest,dist = 3, 0, 0
+src,dest = 3, 0
 path = []
-dijkstra(g,n,src,dest,dist,path)
+dist = dijkstra(g,n,src,dest,path)
 if dist == -1:
     print('there is no any path from %d to %d' %(src + 1, dest + 1))
 else:
