@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter.messagebox import *
+from heapq import *
  
 # Explanation:
 # So GUI is totally finished, and you can get two vertices,which are e_vertexAEnter in line 61 and e_vertexBEnter in line 62
@@ -22,13 +23,16 @@ class Project(object):
         self.clickState = True
         self.verDict = {0:[0,0]}#coor X & coor Y
         self.start = False
-        # Algorithm param
-        # self.a_vertexList = []
+        self.testCase = 1
         #    GUI     #
         self.root = Tk()
         self.root.title("Project")
         self.root.resizable(width=False, height=False)
-
+        print("Discrbition: ")
+        print("Computer project of Discreate Math II in 2020 Spring: ")
+        print("PROJECT 5: create algorithm to determine the shortest ")
+        print("path between two vertices in a weighted grapgh ")
+        print("By Zhan Zeqiye, Zhusubaliev Amangeldi, Imanalieva Kanykei")
         # Create header zone
         self.f_headerFir = Frame(self.root, highlightthickness=0, bg=self.header_bg)
         self.f_headerFir.pack(fill=BOTH, ipadx=10)
@@ -81,6 +85,31 @@ class Project(object):
         self.c_vertex.pack()
  
         self.root.mainloop()
+    # Algorithm about shortest path
+    def dijkstra(self,src,dest,path):
+        d = [-1] * int(self.e_numVertices.get())
+        p = [None] * int(self.e_numVertices.get())
+        d[src] = 0
+        p[src] = [src,0]
+        q = [(0, src)]
+        while (q):
+            v = heappop(q)[1]
+            for i in self.store[v]:
+                u = i[0]
+                w = i[1]
+                if d[u] == -1 or d[u] > d[v] + w:
+                    d[u] = d[v] + w
+                    p[u] = [v,w]
+                    heappush(q, (d[u], u))
+            
+        dist = d[dest]
+        if dist != -1:
+            v = dest
+            while v != src:
+                path.append([[p[v][0],v], p[v][1]])
+                v = p[v][0]
+            path.reverse()
+        return dist
 
     def getNumVertices(self):
         if self.e_numVertices.get() == '':
@@ -96,6 +125,8 @@ class Project(object):
         self.b_confirmVertices.config(state=DISABLED)
         # Make the click function NORMAL
         self.start = True
+        # Algorithm param
+        self.store = [[] for _ in range (0, int(self.e_numVertices.get()))]
 
     def getNumEdges(self):
         if self.e_numEdges.get() == '':
@@ -155,8 +186,13 @@ class Project(object):
         alist = self.verDict[int(a)]
         blist = self.verDict[int(b)]
         self.c_vertex.create_line(alist[0],alist[1],blist[0],blist[1])
-        # self.a_vertexDict[a] = [b,int(w)]
+        # store vertex and weight into store of algo
         self.edgeCur += 1
+        x = int(a) - 1
+        y = int(b) - 1
+        self.store[x].append([y,int(w)])
+        self.store[y].append([x,int(w)])
+
         if self.edgeCur >= int(self.e_numEdges.get()):
             self.l_state.config(text = 'Now you can choose two vertices and find the shortest path')
             self.b_create.config(state=DISABLED)
@@ -169,7 +205,19 @@ class Project(object):
         return False
 
     def find_path(self):
-        return
+        src = int(self.e_vertexAEnter.get()) - 1
+        dest = int(self.e_vertexBEnter.get()) - 1
+        path = []
+        dist = self.dijkstra(src,dest,path)
+        print('Test case: ',self.testCase)
+        self.testCase += 1
+        if dist == -1:
+            print('There is no any path from vertex %d to vertex %d' %(src + 1, dest + 1))
+        else:
+            print('Shortest path from %d to %d has a total weights %d and consists of %d edges:' %(src + 1, dest + 1, dist, len(path)) )
+            for i in path :
+                print('vertex %d to vertex %d, weight: %d'%(i[0][0] + 1, i[0][1] + 1, i[1]))
+
  
     def draw_board(self):
         [self.draw_mesh(x, y) for y in range(self.column) for x in range(self.row)] 
