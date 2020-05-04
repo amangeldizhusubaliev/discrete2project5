@@ -1,0 +1,14 @@
+function Dijkstra(graph, source, destination):
+    for each vertex v in graph:
+        distance[v] = infinity
+        parent[v] = undefined
+    distance[source] = 0
+    q = set of all nodes in graph
+    while q is not empty:
+        v = vertex in q with smallest distance[v]
+        remove v from q
+        for each adjacent vertex u to vertex v:
+            if distance[u] > distance[v] + weight_of_edge(v, u):
+                distance[u] = distance[v] + weight_of_edge(v, u)
+                parent[u] = v
+    return distance[destination], parent[]
