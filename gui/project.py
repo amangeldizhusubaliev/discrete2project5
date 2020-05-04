@@ -1,10 +1,6 @@
 from tkinter import *
 from tkinter.messagebox import *
 from heapq import *
- 
-# Explanation:
-# So GUI is totally finished, and you can get two vertices,which are e_vertexAEnter in line 61 and e_vertexBEnter in line 62
-# and get weight ,which is e_weightEnter in line 63
 
 class Project(object):
  
